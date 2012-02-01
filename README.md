@@ -8,9 +8,9 @@ It is designed to be simple and clear, but also opinionated about good and bad
 practices.
 
 [Armin Ronacher][1] wrote about timezone best practices in his blog post
-[Dealing with Timezones in Python][2].  The *tl;dr* summary is that everything
-sucks about our mechanisms to represent absolute moments in time, but the least
-worst one of all is UTC.
+[Dealing with Timezones in Python][2].  The **tl;dr** summary is that
+everything sucks about our mechanisms to represent absolute moments in time,
+but the least worst one of all is UTC.
 
 [1]: http://twitter.com/mitsuhiko
 [2]: http://lucumr.pocoo.org/2011/7/15/eppur-si-muove/
@@ -73,3 +73,9 @@ absolute time to your user's local timezone.
 
 As with the `to_universal` function, the second argument may be either
 a timezone instance or a timezone string.
+
+**Note**: It _is_ possible to convert universal times to local times, using
+`to_local` (or the alias `from_universal`).  However, there probably is no good
+reason to do so, other than using it for performance-related formatting
+purposes (e.g. formatting the same datetime instance multiple times).  In most
+cases, however, you are advised to use `times.format()` directly instead.
