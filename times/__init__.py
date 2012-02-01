@@ -34,6 +34,8 @@ def to_local(dt, timezone):
     """
     if dt.tzinfo is not None:
         raise ValueError('First argument to to_local() should be a universal time.')
+    if isinstance(timezone, basestring):
+        timezone = pytz.timezone(timezone)
     return pytz.utc.localize(dt).astimezone(timezone)
 
 from_universal = to_local
@@ -46,5 +48,7 @@ def format(dt, timezone):
     """Formats the given universal time for display in the given time zone."""
     if timezone is None:
         raise ValueError('Please give an explicit timezone.')
+    if isinstance(timezone, basestring):
+        timezone = pytz.timezone(timezone)
     return to_local(dt, timezone).strftime(fmt)
 
