@@ -33,7 +33,7 @@ def to_local(dt, timezone):
     given timezone.
     """
     if dt.tzinfo is not None:
-        raise ValueError('Argument `dt` should be a universal time.')
+        raise ValueError('First argument to to_local() should be a universal time.')
     return pytz.utc.localize(dt).astimezone(timezone)
 
 from_universal = to_local
