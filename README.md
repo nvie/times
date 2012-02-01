@@ -1,58 +1,64 @@
 Times
 =====
 
-Times is a minimalistic, super-small, Python library for dealing with date and
-time conversions for once and for all.
+Times is a small, minimalistic, Python library for dealing with time
+conversions to and from timezones, for once and for all.
 
-It is simple, clear and designed to set a standard.
+It is designed to be simple and clear, but also opinionated about good and bad
+practices.
 
-Armin Ronacher blogged about Python datetime best practices in his blog post
-[Dealing with Timezones in Python][1].  The *tl;dr* summary is that everything
+[Armin Ronacher][1] wrote about timezone best practices in his blog post
+[Dealing with Timezones in Python][2].  The *tl;dr* summary is that everything
 sucks about our mechanisms to represent absolute moments in time, but the least
-worse of all (as in _an absolute moment in time_) in the universe is UTC.
+worst one of all is UTC.
 
-[1]: http://lucumr.pocoo.org/2011/7/15/eppur-si-muove/
+[1]: http://twitter.com/mitsuhiko
+[2]: http://lucumr.pocoo.org/2011/7/15/eppur-si-muove/
 
 
-Recording times
----------------
+Rationale
+---------
 
-When you want to record the current time, always use this:
+Python's `datetime` library and the `pytz` library are powerful, but because
+they don't prescribe a standard practice of working with dates, everybody is
+free to pick his or her own way.
+
+`times` tries to make working with times and timezones a little less of
+a clusterfuck and hopefully set a standard of some sort.
+
+It still uses `datetime` and `pytz` under the covers, but as long as you never
+use any timezone related stuff outside `times`, you should be safe.
+
+
+Accepting time
+--------------
+
+Never work with _local_ times.  Whenever you must accept local time input (e.g.
+from a user), convert it to universal time immediately:
+
+    >>> times.to_universal(local_time, 'Europe/Amsterdam')
+    datetime.datetime(2012, 2, 1, 10, 31, 45, 781262)
+
+You can approach the conversion from the other side, too, as `to_universal` is
+conveniently aliased to `from_local`:
+
+    >>> times.from_local(local_time, 'Europe/Amsterdam')
+    datetime.datetime(2012, 2, 1, 10, 31, 45, 781262)
+
+The second argument can be a `pytz.timezone` instance, or a timezone string.
+
+If the `local_time` variable already holds timezone info, you _must_ leave out
+the source timezone from the call.
+
+To enforce best practices, `times` will never implicitly convert times for you,
+even if that would technically be possible.
+
+
+When you want to record the current time, you can use this convenience method:
 
     >>> import times
     >>> print times.now()
-    datetime.datetime(2012, 2, 1, 10, 20, 1, 621491)
-
-It's actually an alias for `datetime.utcnow`, but it prevents you from using
-`datetime.now` accidentally.
-
-
-Accepting times from end users
-------------------------------
-
-Say you get a date or time as input from the end user (i.e. you get a locally
-formatted time).  Either the input is a tzinfo-less datetime object, like
-`datetime.now` gives you, or it has some time zone info attached to it.  In
-both cases, simply use the `normalize()` method:
-
-    >>> import times, pytz
-    >>> local_time = datetime.now()   # given a local_time without tzinfo
-    >>> local_time
-    datetime.datetime(2012, 2, 1, 11, 31, 45, 781262)
-    >>> ams = pytz.timezone('Europe/Amsterdam')
-    >>> times.normalize(local_time, ams)
-    datetime.datetime(2012, 2, 1, 10, 31, 45, 781262)
-
-If the given local date time contains time zone information, you can leave the
-second argument to `normalize()` out:
-
-    >>> import times
-    >>> local_time                    # given a local_time with tzinfo
-    datetime.datetime(2012, 2, 1, 11, 44, 29, 403115, tzinfo=<DstTzInfo 'Europe/Amsterdam' CET+1:00:00 STD>)
-    >>> times.normalize(local_time)
-    datetime.datetime(2012, 2, 1, 10, 44, 29, 403115)
-
-This obeys to the conventions suggested by Armin in his orginal article.
+    datetime.datetime(2012, 2, 1, 11, 51, 27, 621491)
 
 
 Presenting times
@@ -60,8 +66,10 @@ Presenting times
 To _present_ times to the end user of your software, you should format your
 absolute time to your user's local timezone.
 
-    import times, pytz
-    now = times.now()
-    ams = pytz.timezone('Europa/Amsterdam')
-    print times.format(now, ams)
+    >>> import times
+    >>> now = times.now()
+    >>> print times.format(now, 'CET')
+    2012-02-01 21:32:10+0100
 
+As with the `to_universal` function, the second argument may be either
+a timezone instance or a timezone string.
