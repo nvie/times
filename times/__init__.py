@@ -1,6 +1,9 @@
 import datetime
 import pytz
+from .version import VERSION
 
+__author__ = 'Vincent Driessen <vincent@3rdcloud.com>'
+__version__ = VERSION
 
 now = datetime.datetime.utcnow
 """Returns a safe-to-store datetime without tzinfo representing the current moment."""

@@ -1,7 +1,3 @@
-"""
-Times is a small, minimalistic, Python library for dealing with time conversions
-to and from timezones, for once and for all.
-"""
 import os
 from setuptools import setup
 
@@ -21,7 +17,8 @@ setup(
     author='Vincent Driessen',
     author_email='vincent@3rdcloud.com',
     description='Times is a small, minimalistic, Python library for dealing '
-           'with time conversions to and from timezones, for once and for all.',
+           'with time conversions between universal time and arbitrary '
+           'timezones.',
     long_description=__doc__,
     packages=['times'],
     include_package_data=True,
