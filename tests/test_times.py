@@ -77,6 +77,13 @@ class TestTimes(TestCase):
         self.assertEquals(times.format(dt, ams), '2012-02-01 12:56:31+0100')
         self.assertEquals(times.format(dt, est), '2012-02-01 06:56:31-0500')
 
+    def test_custom_format(self):
+        dt = self.sometime_univ
+        auckland = pytz.timezone('Pacific/Auckland')
+        est = pytz.timezone('EST')
+        self.assertEquals(times.format(dt, auckland, '%H'), '00')
+        self.assertEquals(times.format(dt, est, '%H'), '06')
+
 
     def test_format_refuses_local_times(self):
         """Format refuses local time input"""

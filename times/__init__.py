@@ -2,9 +2,6 @@ import datetime
 import pytz
 
 
-fmt = '%Y-%m-%d %H:%M:%S%z'
-"""Default formatting used by times."""
-
 now = datetime.datetime.utcnow
 """Returns a safe-to-store datetime without tzinfo representing the current moment."""
 
@@ -44,11 +41,12 @@ timezone.
 """
 
 
-def format(dt, timezone):
+def format(dt, timezone, fmt=None):
     """Formats the given universal time for display in the given time zone."""
+    if fmt is None:
+        fmt = '%Y-%m-%d %H:%M:%S%z'
     if timezone is None:
         raise ValueError('Please give an explicit timezone.')
-    if isinstance(timezone, basestring):
-        timezone = pytz.timezone(timezone)
     return to_local(dt, timezone).strftime(fmt)
+
 
