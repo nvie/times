@@ -8,10 +8,6 @@ __author__ = 'Vincent Driessen <vincent@3rdcloud.com>'
 __version__ = VERSION
 
 
-def now(*args, **kw):
-    return datetime.datetime.utcnow(*args, **kw)
-
-
 def to_universal(local_dt, timezone=None):
     """Converts the given local datetime or UNIX timestamp to a universal
     datetime.
@@ -95,4 +91,4 @@ def format(dt, timezone, fmt=None):
     return to_local(dt, timezone).strftime(fmt)
 
 
-now.__doc__ = datetime.datetime.utcnow.__doc__
+now = datetime.datetime.utcnow
