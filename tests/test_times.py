@@ -111,28 +111,55 @@ class TestTimes(TestCase):
 
 
     def test_convert_unix_time_to_datetime(self):
-      """Can convert unix_time_to_datetime"""
-      self.assertEquals(
-        times.from_unix(1233456789.0),
-        datetime(2009, 1, 31, 18, 53, 9)
-      )
+        """Can convert from UNIX time to universal time."""
+        unix_time = 1328257004.456  # as returned by time.time()
+        self.assertEquals(
+            times.from_unix(unix_time),
+            datetime(2012, 2, 3, 8, 16, 44, 456000)
+        )
+
+        self.assertEquals(
+            times.format(times.from_unix(unix_time), 'UTC'),
+            '2012-02-03 08:16:44+0000')
+        self.assertEquals(
+            times.format(times.from_unix(unix_time), 'Europe/Amsterdam'),
+            '2012-02-03 09:16:44+0100')
+        self.assertEquals(
+            times.format(times.from_unix(unix_time), 'Pacific/Auckland'),
+            '2012-02-03 21:16:44+1300')
 
 
-    def test_convert_non_numeric(self):
+    def test_convert_datetime_to_unix_time(self):
+        """Can convert UNIX time to universal time."""
+        self.assertEquals(
+            times.to_unix(datetime(2012, 2, 3, 8, 16, 44)),
+            1328257004.0
+        )
+
+
+    def test_convert_between_unix_times(self):
+        """Can convert UNIX time to universal time and back."""
+        given_unix = 1328257004.456  # as returned by time.time()
+        self.assertEquals(
+            times.to_unix(times.from_unix(given_unix)),
+            int(given_unix)
+        )
+
+        given_dt = self.sometime_univ
+        self.assertEquals(
+            times.from_unix(times.to_unix(given_dt)),
+            given_dt
+        )
+
+
+    def test_convert_non_numeric_from_unix(self):
         """from_unix refuses to accept non-numeric input"""
         with self.assertRaises(ValueError):
             times.from_unix('lol')
 
 
-    def test_convert_non_numeric(self):
+    def test_convert_non_numeric_to_unix(self):
         """to_unix refuses to accept non-numeric input"""
         with self.assertRaises(ValueError):
             times.to_unix('lol')
-
-
-    def test_convert_datetime_to_unix_time(self):
-       self.assertEquals(
-        times.to_unix(datetime(2009, 1, 31, 18, 53, 9)),
-        1233456789.0
-      )
 
