@@ -1,13 +1,8 @@
-import os
 from setuptools import setup
 
 def get_version():
-    basedir = os.path.dirname(__file__)
-    with open(os.path.join(basedir, 'times/version.py')) as f:
-        VERSION = None
-        exec(f.read())
-        return VERSION
-    raise RuntimeError('No version info found.')
+    from times import __version__
+    return __version__
 
 setup(
     name='times',

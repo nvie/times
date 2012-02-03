@@ -2,10 +2,8 @@ import datetime
 import calendar
 import pytz
 
-from .version import VERSION
-
 __author__ = 'Vincent Driessen <vincent@3rdcloud.com>'
-__version__ = VERSION
+__version__ = '0.2'
 
 
 def to_universal(local_dt, timezone=None):
