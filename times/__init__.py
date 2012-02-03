@@ -1,4 +1,5 @@
 import datetime
+import calendar
 
 import pytz
 
@@ -12,9 +13,8 @@ def now(*args, **kw):
     return datetime.datetime.utcnow(*args, **kw)
 
 
-def to_universal(local_dt, timezone=None):
+def from_local(local_dt, timezone=None):
     """Converts the given local datetime to a universal datetime."""
-
     if timezone is not None:
         if local_dt.tzinfo is not None:
             raise ValueError(
@@ -25,7 +25,6 @@ def to_universal(local_dt, timezone=None):
         if isinstance(timezone, basestring):
             timezone = pytz.timezone(timezone)
         dt_with_tzinfo = timezone.localize(local_dt)
-
     else:
         if local_dt.tzinfo is None:
             raise ValueError(
@@ -36,9 +35,18 @@ def to_universal(local_dt, timezone=None):
     return univ_dt.replace(tzinfo=None)
 
 
-def from_local(*args, **kw):
-    """Converts the given local datetime to a universal datetime."""
-    return from_local(*args, **kw)
+def to_universal(local_dt, timezone=None):
+    """Converts the given local datetime or UNIX timestamp to a universal
+    datetime.
+    """
+    if isinstance(local_dt, (int, float)):
+        if timezone is not None:
+            raise ValueError(
+                'Timezone argument illegal when using UNIX timestamps.'
+            )
+        return from_unix(local_dt)
+    else:
+        return from_local(local_dt, timezone)
 
 
 def to_local(dt, timezone):
@@ -65,6 +73,28 @@ def format(dt, timezone, fmt=None):
     if timezone is None:
         raise ValueError('Please give an explicit timezone.')
     return to_local(dt, timezone).strftime(fmt)
+
+
+def to_unix(dt):
+    """Converts a datetime object to unixtime"""
+    if not isinstance(dt, datetime.datetime):
+        raise ValueError(
+            'First argument to to_unix should be a datetime object'
+        )
+
+    return calendar.timegm(dt.utctimetuple())
+
+
+def from_unix(ut):
+    """Converts a UNIX timestamp, as returned by `time.time()`, to universal
+    time.  Assumes the input is in UTC, as `time.time()` does.
+    """
+    if not isinstance(ut, (int, float)):
+        raise ValueError(
+            'First argument to from_unix should be an int or float'
+        )
+
+    return datetime.datetime.utcfromtimestamp(float(ut))
 
 
 now.__doc__ = datetime.datetime.utcnow.__doc__

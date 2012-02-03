@@ -39,6 +39,11 @@ class TestTimes(TestCase):
         self.assertEquals(
                 times.to_universal(ams_time).hour, 11)
 
+        # Test alias from_local, too
+        self.assertEquals(
+                times.from_local(ny_time),
+                self.sometime_univ)
+
 
     def test_local_time_without_tzinfo_to_universal(self):
         """Convert local dates without timezone info to universal date"""
@@ -109,4 +114,66 @@ class TestTimes(TestCase):
         with self.assertRaises(ValueError):
             times.to_local(loc, pytz.timezone('Europe/Amsterdam'))
 
+
+    def test_convert_unix_time_to_datetime(self):
+        """Can convert from UNIX time to universal time."""
+        unix_time = 1328257004.456  # as returned by time.time()
+        self.assertEquals(
+            times.from_unix(unix_time),
+            datetime(2012, 2, 3, 8, 16, 44, 456000)
+        )
+
+        self.assertEquals(
+            times.format(times.from_unix(unix_time), 'UTC'),
+            '2012-02-03 08:16:44+0000')
+        self.assertEquals(
+            times.format(times.from_unix(unix_time), 'Europe/Amsterdam'),
+            '2012-02-03 09:16:44+0100')
+        self.assertEquals(
+            times.format(times.from_unix(unix_time), 'Pacific/Auckland'),
+            '2012-02-03 21:16:44+1300')
+
+
+    def test_convert_unix_time_to_datetime_with_to_universal(self):
+        """Method to_universal should detect UNIX timestamp."""
+        unix_time = 1328257004.456  # as returned by time.time()
+        self.assertEquals(
+            times.to_universal(unix_time),
+            datetime(2012, 2, 3, 8, 16, 44, 456000)
+        )
+
+
+    def test_convert_datetime_to_unix_time(self):
+        """Can convert UNIX time to universal time."""
+        self.assertEquals(
+            times.to_unix(datetime(2012, 2, 3, 8, 16, 44)),
+            1328257004.0
+        )
+
+
+    def test_convert_between_unix_times(self):
+        """Can convert UNIX time to universal time and back."""
+        given_unix = 1328257004.456  # as returned by time.time()
+        self.assertEquals(
+            times.to_unix(times.from_unix(given_unix)),
+            int(given_unix)
+        )
+
+        given_dt = self.sometime_univ
+        self.assertEquals(
+            times.from_unix(times.to_unix(given_dt)),
+            given_dt
+        )
+
+
+    def test_convert_non_numeric_from_unix(self):
+        """from_unix refuses to accept non-numeric input"""
+        with self.assertRaises(ValueError):
+            times.from_unix('lol')
+
+
+    def test_convert_non_numeric_to_unix(self):
+        """to_unix refuses to accept non-numeric input"""
+        with self.assertRaises(ValueError):
+            times.to_unix('lol')
 
