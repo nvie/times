@@ -9,7 +9,6 @@ __version__ = VERSION
 
 
 def now(*args, **kw):
-    now.__doc__ = datetime.datetime.utcnow
     return datetime.datetime.utcnow(*args, **kw)
 
 
@@ -55,7 +54,6 @@ def to_local(dt, timezone):
 
 
 def from_universal(*args, **kw):
-    from_universal.__doc__ = to_local.__doc__
     return to_local(*args, **kw)
 
 
@@ -67,3 +65,7 @@ def format(dt, timezone, fmt=None):
     if timezone is None:
         raise ValueError('Please give an explicit timezone.')
     return to_local(dt, timezone).strftime(fmt)
+
+
+now.__doc__ = datetime.datetime.utcnow.__doc__
+from_universal.__doc__ = to_local.__doc__
