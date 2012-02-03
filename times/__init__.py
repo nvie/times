@@ -84,7 +84,7 @@ def from_unix(ut):
     """
     if not isinstance(ut, (int, float)):
         raise ValueError(
-            'First agument to from_unix should be an int or float'
+            'First argument to from_unix should be an int or float'
         )
 
     return datetime.datetime.utcfromtimestamp(float(ut))
