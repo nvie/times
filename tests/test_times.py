@@ -39,6 +39,11 @@ class TestTimes(TestCase):
         self.assertEquals(
                 times.to_universal(ams_time).hour, 11)
 
+        # Test alias from_local, too
+        self.assertEquals(
+                times.from_local(ny_time),
+                self.sometime_univ)
+
 
     def test_local_time_without_tzinfo_to_universal(self):
         """Convert local dates without timezone info to universal date"""
@@ -127,6 +132,15 @@ class TestTimes(TestCase):
         self.assertEquals(
             times.format(times.from_unix(unix_time), 'Pacific/Auckland'),
             '2012-02-03 21:16:44+1300')
+
+
+    def test_convert_unix_time_to_datetime_with_to_universal(self):
+        """Method to_universal should detect UNIX timestamp."""
+        unix_time = 1328257004.456  # as returned by time.time()
+        self.assertEquals(
+            times.to_universal(unix_time),
+            datetime(2012, 2, 3, 8, 16, 44, 456000)
+        )
 
 
     def test_convert_datetime_to_unix_time(self):

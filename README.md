@@ -54,6 +54,28 @@ To enforce best practices, `times` will never implicitly convert times for you,
 even if that would technically be possible.
 
 
+POSIX timestamps
+----------------
+If you prefer working with UNIX (POSIX) timestamps, you can convert them to
+safe datetime representations easily:
+
+    >>> import time, times
+    >>> print times.from_unix(time.time())
+    2012-02-03 11:58:58.069461
+    >>> print times.to_universal(time.time())
+    2012-02-03 11:59:03.588419
+
+Note that `to_universal` auto-detects that you give it a UNIX timestamp.
+
+To get the correct UTC-based UNIX timestamp representation of a universal
+datetime, use:
+
+    >>> print times.to_unix(universal_time)
+
+
+Current time
+------------
+
 When you want to record the current time, you can use this convenience method:
 
     >>> import times
