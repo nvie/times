@@ -1,6 +1,5 @@
 import datetime
 import calendar
-
 import pytz
 
 from .version import VERSION
@@ -29,6 +28,9 @@ def to_universal(local_dt, timezone=None):
 
 def from_local(local_dt, timezone=None):
     """Converts the given local datetime to a universal datetime."""
+    if not isinstance(local_dt, datetime.datetime):
+        raise ValueError('First argument should be int, float or datetime.')
+
     if timezone is not None:
         if local_dt.tzinfo is not None:
             raise ValueError(

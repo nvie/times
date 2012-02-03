@@ -65,12 +65,6 @@ class TestTimes(TestCase):
                 times.to_universal(ams_time, 'Europe/Amsterdam'),
                 self.sometime_univ)
 
-    def test_to_universal_rejects_no_tzinfo(self):
-        """Converting to universal times requires source timezone"""
-        now = datetime.now()
-        with self.assertRaises(ValueError):
-            times.to_universal(now)
-
     def test_to_universal_with_unix_timestamp(self):
         """Convert UNIX timestamps to universal date"""
         unix_time = 1328257004.456  # as returned by time.time()
@@ -78,6 +72,17 @@ class TestTimes(TestCase):
             times.to_universal(unix_time),
             datetime(2012, 2, 3, 8, 16, 44, 456000)
         )
+
+    def test_to_universal_rejects_no_tzinfo(self):
+        """Converting to universal times requires source timezone"""
+        now = datetime.now()
+        with self.assertRaises(ValueError):
+            times.to_universal(now)
+
+    def test_to_universal_rejects_non_date_arguments(self):
+        """to_universal rejects non-date arguments"""
+        with self.assertRaises(ValueError):
+            times.to_universal('lol')
 
 
     # from_unix()
