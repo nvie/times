@@ -71,7 +71,9 @@ def format(dt, timezone, fmt=None):
 def to_unix(dt):
     """Converts a datetime object to unixtime"""
     if not isinstance(dt, datetime.datetime):
-        raise ValueError('First argument to to_unix should be a datetime object')
+        raise ValueError(
+            'First argument to to_unix should be a datetime object'
+        )
 
     return calendar.timegm(dt.utctimetuple())
 
@@ -81,7 +83,9 @@ def from_unix(ut):
     time.  Assumes the input is in UTC, as `time.time()` does.
     """
     if not isinstance(ut, (int, float)):
-        raise ValueError('First agument to from_unix should be an int or float')
+        raise ValueError(
+            'First agument to from_unix should be an int or float'
+        )
 
     return datetime.datetime.utcfromtimestamp(float(ut))
 
