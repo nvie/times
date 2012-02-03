@@ -63,10 +63,6 @@ def from_unix(ut):
     return datetime.datetime.utcfromtimestamp(float(ut))
 
 
-def from_universal(*args, **kw):
-    return to_local(*args, **kw)
-
-
 def to_local(dt, timezone):
     """Converts universal datetime to a local representation in given timezone.
     """
@@ -100,4 +96,3 @@ def format(dt, timezone, fmt=None):
 
 
 now.__doc__ = datetime.datetime.utcnow.__doc__
-from_universal.__doc__ = to_local.__doc__

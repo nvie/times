@@ -98,6 +98,6 @@ As with the `to_universal` function, the second argument may be either
 a timezone instance or a timezone string.
 
 **Note**: It _is_ possible to convert universal times to local times, using
-`to_local` (or the alias `from_universal`).  However, you probably shouldn't do
-it, unless you want to `strftime()` the resulting local date multiple times.
-In any other case, you are advised to use `times.format()` directly instead.
+`to_local`).  However, you probably shouldn't do it, unless you want to
+`strftime()` the resulting local date multiple times.  In any other case, you
+are advised to use `times.format()` directly instead.
