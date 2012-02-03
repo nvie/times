@@ -85,8 +85,9 @@ When you want to record the current time, you can use this convenience method:
 
 Presenting times
 ----------------
-To _present_ times to the end user of your software, you should format your
-absolute time to your user's local timezone.
+
+To _present_ times to the end user of your software, you should explicitly
+format your universal time to your user's local timezone.
 
     >>> import times
     >>> now = times.now()
