@@ -80,49 +80,6 @@ class TestTimes(TestCase):
         )
 
 
-    # format()
-    def test_format_without_tzinfo(self):
-        """Format times without timezone info"""
-        dt = self.sometime_univ
-        auckland = pytz.timezone('Pacific/Auckland')
-        est = pytz.timezone('EST')
-        ams = pytz.timezone('Europe/Amsterdam')
-        self.assertEquals(times.format(dt, auckland), '2012-02-02 00:56:31+1300')
-        self.assertEquals(times.format(dt, ams), '2012-02-01 12:56:31+0100')
-        self.assertEquals(times.format(dt, est), '2012-02-01 06:56:31-0500')
-
-    def test_custom_format(self):
-        dt = self.sometime_univ
-        auckland = pytz.timezone('Pacific/Auckland')
-        est = pytz.timezone('EST')
-        self.assertEquals(times.format(dt, auckland, '%H'), '00')
-        self.assertEquals(times.format(dt, est, '%H'), '06')
-
-    def test_format_refuses_local_times(self):
-        """Format refuses local time input"""
-        auckland = pytz.timezone('Pacific/Auckland')
-        with self.assertRaises(ValueError):
-            times.format(self.sometime_in_amsterdam, auckland)
-
-
-    # to_local()
-    def test_convert_universal_to_local(self):
-        """Convert universal time to local time"""
-        univ = self.sometime_univ
-        self.assertEquals(
-                times.to_local(univ, pytz.timezone('Europe/Amsterdam')),
-                self.sometime_in_amsterdam)
-        self.assertEquals(
-                times.to_local(univ, pytz.timezone('EST')),
-                self.sometime_in_newyork)
-
-    def test_convert_refuses_local_to_local(self):
-        """Refuses to convert between timezones directly"""
-        loc = self.sometime_in_amsterdam
-        with self.assertRaises(ValueError):
-            times.to_local(loc, pytz.timezone('Europe/Amsterdam'))
-
-
     # from_unix()
     def test_convert_unix_time_to_datetime(self):
         """Can convert from UNIX time to universal time."""
@@ -160,6 +117,49 @@ class TestTimes(TestCase):
         """to_unix refuses to accept non-numeric input"""
         with self.assertRaises(ValueError):
             times.to_unix('lol')
+
+
+    # to_local()
+    def test_convert_universal_to_local(self):
+        """Convert universal time to local time"""
+        univ = self.sometime_univ
+        self.assertEquals(
+                times.to_local(univ, pytz.timezone('Europe/Amsterdam')),
+                self.sometime_in_amsterdam)
+        self.assertEquals(
+                times.to_local(univ, pytz.timezone('EST')),
+                self.sometime_in_newyork)
+
+    def test_convert_refuses_local_to_local(self):
+        """Refuses to convert between timezones directly"""
+        loc = self.sometime_in_amsterdam
+        with self.assertRaises(ValueError):
+            times.to_local(loc, pytz.timezone('Europe/Amsterdam'))
+
+
+    # format()
+    def test_format_without_tzinfo(self):
+        """Format times without timezone info"""
+        dt = self.sometime_univ
+        auckland = pytz.timezone('Pacific/Auckland')
+        est = pytz.timezone('EST')
+        ams = pytz.timezone('Europe/Amsterdam')
+        self.assertEquals(times.format(dt, auckland), '2012-02-02 00:56:31+1300')
+        self.assertEquals(times.format(dt, ams), '2012-02-01 12:56:31+0100')
+        self.assertEquals(times.format(dt, est), '2012-02-01 06:56:31-0500')
+
+    def test_custom_format(self):
+        dt = self.sometime_univ
+        auckland = pytz.timezone('Pacific/Auckland')
+        est = pytz.timezone('EST')
+        self.assertEquals(times.format(dt, auckland, '%H'), '00')
+        self.assertEquals(times.format(dt, est, '%H'), '06')
+
+    def test_format_refuses_local_times(self):
+        """Format refuses local time input"""
+        auckland = pytz.timezone('Pacific/Auckland')
+        with self.assertRaises(ValueError):
+            times.format(self.sometime_in_amsterdam, auckland)
 
 
     # from/to unix and back

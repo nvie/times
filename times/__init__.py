@@ -13,6 +13,20 @@ def now(*args, **kw):
     return datetime.datetime.utcnow(*args, **kw)
 
 
+def to_universal(local_dt, timezone=None):
+    """Converts the given local datetime or UNIX timestamp to a universal
+    datetime.
+    """
+    if isinstance(local_dt, (int, float)):
+        if timezone is not None:
+            raise ValueError(
+                'Timezone argument illegal when using UNIX timestamps.'
+            )
+        return from_unix(local_dt)
+    else:
+        return from_local(local_dt, timezone)
+
+
 def from_local(local_dt, timezone=None):
     """Converts the given local datetime to a universal datetime."""
     if timezone is not None:
@@ -35,18 +49,20 @@ def from_local(local_dt, timezone=None):
     return univ_dt.replace(tzinfo=None)
 
 
-def to_universal(local_dt, timezone=None):
-    """Converts the given local datetime or UNIX timestamp to a universal
-    datetime.
+def from_unix(ut):
+    """Converts a UNIX timestamp, as returned by `time.time()`, to universal
+    time.  Assumes the input is in UTC, as `time.time()` does.
     """
-    if isinstance(local_dt, (int, float)):
-        if timezone is not None:
-            raise ValueError(
-                'Timezone argument illegal when using UNIX timestamps.'
-            )
-        return from_unix(local_dt)
-    else:
-        return from_local(local_dt, timezone)
+    if not isinstance(ut, (int, float)):
+        raise ValueError(
+            'First argument to from_unix should be an int or float'
+        )
+
+    return datetime.datetime.utcfromtimestamp(float(ut))
+
+
+def from_universal(*args, **kw):
+    return to_local(*args, **kw)
 
 
 def to_local(dt, timezone):
@@ -61,20 +77,6 @@ def to_local(dt, timezone):
     return pytz.utc.localize(dt).astimezone(timezone)
 
 
-def from_universal(*args, **kw):
-    return to_local(*args, **kw)
-
-
-def format(dt, timezone, fmt=None):
-    """Formats the given universal time for display in the given time zone."""
-
-    if fmt is None:
-        fmt = '%Y-%m-%d %H:%M:%S%z'
-    if timezone is None:
-        raise ValueError('Please give an explicit timezone.')
-    return to_local(dt, timezone).strftime(fmt)
-
-
 def to_unix(dt):
     """Converts a datetime object to unixtime"""
     if not isinstance(dt, datetime.datetime):
@@ -85,16 +87,14 @@ def to_unix(dt):
     return calendar.timegm(dt.utctimetuple())
 
 
-def from_unix(ut):
-    """Converts a UNIX timestamp, as returned by `time.time()`, to universal
-    time.  Assumes the input is in UTC, as `time.time()` does.
-    """
-    if not isinstance(ut, (int, float)):
-        raise ValueError(
-            'First argument to from_unix should be an int or float'
-        )
+def format(dt, timezone, fmt=None):
+    """Formats the given universal time for display in the given time zone."""
 
-    return datetime.datetime.utcfromtimestamp(float(ut))
+    if fmt is None:
+        fmt = '%Y-%m-%d %H:%M:%S%z'
+    if timezone is None:
+        raise ValueError('Please give an explicit timezone.')
+    return to_local(dt, timezone).strftime(fmt)
 
 
 now.__doc__ = datetime.datetime.utcnow.__doc__
