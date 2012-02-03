@@ -39,12 +39,6 @@ from a user), convert it to universal time immediately:
     >>> times.to_universal(local_time, 'Europe/Amsterdam')
     datetime.datetime(2012, 2, 1, 10, 31, 45, 781262)
 
-You can approach the conversion from the other side, too, as `to_universal` is
-conveniently aliased to `from_local`:
-
-    >>> times.from_local(local_time, 'Europe/Amsterdam')
-    datetime.datetime(2012, 2, 1, 10, 31, 45, 781262)
-
 The second argument can be a `pytz.timezone` instance, or a timezone string.
 
 If the `local_time` variable already holds timezone info, you _must_ leave out
@@ -60,15 +54,12 @@ If you prefer working with UNIX (POSIX) timestamps, you can convert them to
 safe datetime representations easily:
 
     >>> import time, times
-    >>> print times.from_unix(time.time())
-    2012-02-03 11:58:58.069461
     >>> print times.to_universal(time.time())
     2012-02-03 11:59:03.588419
 
 Note that `to_universal` auto-detects that you give it a UNIX timestamp.
 
-To get the correct UTC-based UNIX timestamp representation of a universal
-datetime, use:
+To get the UNIX timestamp representation of a universal datetime, use:
 
     >>> print times.to_unix(universal_time)
 
