@@ -110,3 +110,29 @@ class TestTimes(TestCase):
             times.to_local(loc, pytz.timezone('Europe/Amsterdam'))
 
 
+    def test_convert_unix_time_to_datetime(self):
+      """Can convert unix_time_to_datetime"""
+      self.assertEquals(
+        times.from_unix(1233456789.0),
+        datetime(2009, 1, 31, 18, 53, 9)
+      )
+
+
+    def test_convert_non_numeric(self):
+        """from_unix refuses to accept non-numeric input"""
+        with self.assertRaises(ValueError):
+            times.from_unix('lol')
+
+
+    def test_convert_non_numeric(self):
+        """to_unix refuses to accept non-numeric input"""
+        with self.assertRaises(ValueError):
+            times.to_unix('lol')
+
+
+    def test_convert_datetime_to_unix_time(self):
+       self.assertEquals(
+        times.to_unix(datetime(2009, 1, 31, 18, 53, 9)),
+        1233456789.0
+      )
+
