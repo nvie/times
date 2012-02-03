@@ -3,7 +3,7 @@ import calendar
 import pytz
 
 __author__ = 'Vincent Driessen <vincent@3rdcloud.com>'
-__version__ = '0.2'
+__version__ = '0.3'
 
 
 def to_universal(local_dt, timezone=None):
