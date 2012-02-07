@@ -48,6 +48,26 @@ To enforce best practices, `times` will never implicitly convert times for you,
 even if that would technically be possible.
 
 
+Date Strings
+------------
+If you want to accepting datetime representations in string form (for example,
+from JSON APIs), you can convert them to universal datetimes easily:
+
+    >>> import time, times
+    >>> print times.to_universal('2012-02-03 11:59:03-0500')   # auto-detects source timezone
+
+`Times` utilizes the string parsing routines available in [dateutil][3].  Note
+that the source timezone is auto-detected from the string.  If the string
+contains a timezone offset, you are not allowed to explicitly specify one.
+
+If the string does not contain any timezone offset, you _must_ specify the
+source timezone explicitly:
+
+    >>> print times.to_universal('2012-02-03 11:59:03', 'Europe/Amsterdam')
+
+This is the inverse of `times.format()`.
+
+
 POSIX timestamps
 ----------------
 If you prefer working with UNIX (POSIX) timestamps, you can convert them to
@@ -92,3 +112,6 @@ a timezone instance or a timezone string.
 `to_local`).  However, you probably shouldn't do it, unless you want to
 `strftime()` the resulting local date multiple times.  In any other case, you
 are advised to use `times.format()` directly instead.
+
+[3]: http://labix.org/python-dateutil#head-c0e81a473b647dfa787dc11e8c69557ec2c3ecd2
+
