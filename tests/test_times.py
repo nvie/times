@@ -73,6 +73,24 @@ class TestTimes(TestCase):
             datetime(2012, 2, 3, 8, 16, 44, 456000)
         )
 
+    def test_to_universal_with_string(self):
+        dt = self.sometime_univ
+
+        # Timezone-aware strings
+        self.assertEquals(dt, times.to_universal('2012-02-02 00:56:31+1300'))
+        self.assertEquals(dt, times.to_universal('2012-02-01 12:56:31+0100'))
+        self.assertEquals(dt, times.to_universal('2012-02-01 06:56:31-0500'))
+
+        # Timezone-less strings require explicit source timezone
+        self.assertEquals(dt, times.to_universal('2012-02-02 00:56:31', 'Pacific/Auckland'))
+        self.assertEquals(dt, times.to_universal('2012-02-01 12:56:31', 'CET'))
+        self.assertEquals(dt, times.to_universal('2012-02-01 06:56:31', 'EST'))
+
+        # Timezone-less strings are rejected if source timezone is not specified
+        with self.assertRaises(ValueError):
+            self.assertEquals(dt, times.to_universal('2012-02-01 12:56:31'))
+
+
     def test_to_universal_rejects_no_tzinfo(self):
         """Converting to universal times requires source timezone"""
         now = datetime.now()
@@ -82,7 +100,7 @@ class TestTimes(TestCase):
     def test_to_universal_rejects_non_date_arguments(self):
         """to_universal rejects non-date arguments"""
         with self.assertRaises(ValueError):
-            times.to_universal('lol')
+            times.to_universal([1, 2, 3])
 
 
     # from_unix()

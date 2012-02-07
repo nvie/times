@@ -1,11 +1,13 @@
 import datetime
 import calendar
 import pytz
+from dateutil.parser import parse
 from .version import VERSION
 
 __author__ = 'Vincent Driessen <vincent@3rdcloud.com>'
 __version__ = VERSION
 
+_default_fmt = '%Y-%m-%d %H:%M:%S%z'
 
 def to_universal(local_dt, timezone=None):
     """Converts the given local datetime or UNIX timestamp to a universal
@@ -17,8 +19,10 @@ def to_universal(local_dt, timezone=None):
                 'Timezone argument illegal when using UNIX timestamps.'
             )
         return from_unix(local_dt)
-    else:
-        return from_local(local_dt, timezone)
+    elif isinstance(local_dt, basestring):
+        local_dt = parse(local_dt)
+
+    return from_local(local_dt, timezone)
 
 
 def from_local(local_dt, timezone=None):
@@ -84,7 +88,7 @@ def format(dt, timezone, fmt=None):
     """Formats the given universal time for display in the given time zone."""
 
     if fmt is None:
-        fmt = '%Y-%m-%d %H:%M:%S%z'
+        fmt = _default_fmt
     if timezone is None:
         raise ValueError('Please give an explicit timezone.')
     return to_local(dt, timezone).strftime(fmt)

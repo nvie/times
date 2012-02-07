@@ -1,3 +1,4 @@
+import sys
 import os
 from setuptools import setup
 
@@ -8,6 +9,14 @@ def get_version():
         exec(f.read())
         return VERSION
     raise RuntimeError('No version info found.')
+
+def get_dependencies():
+    deps = ['pytz']
+    if sys.version_info[0] == 3:  # Python >= 3
+        deps.append('python-dateutil >= 2')
+    else:
+        deps.append('python-dateutil < 2')
+    return deps
 
 setup(
     name='times',
@@ -24,7 +33,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     platforms='any',
-    install_requires=['pytz'],
+    install_requires=get_dependencies(),
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
         #'Development Status :: 1 - Planning',
