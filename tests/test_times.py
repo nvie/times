@@ -77,9 +77,9 @@ class TestTimes(TestCase):
         dt = self.sometime_univ
 
         # Timezone-aware strings
-        self.assertEquals(dt, times.to_universal('2012-02-02 00:56:31+1300'))
-        self.assertEquals(dt, times.to_universal('2012-02-01 12:56:31+0100'))
-        self.assertEquals(dt, times.to_universal('2012-02-01 06:56:31-0500'))
+        self.assertEquals(dt, times.to_universal('2012-02-02 00:56:31+13:00'))
+        self.assertEquals(dt, times.to_universal('2012-02-01 12:56:31+01:00'))
+        self.assertEquals(dt, times.to_universal('2012-02-01 06:56:31-05:00'))
 
         # Timezone-less strings require explicit source timezone
         self.assertEquals(dt, times.to_universal('2012-02-02 00:56:31', 'Pacific/Auckland'))
@@ -114,13 +114,13 @@ class TestTimes(TestCase):
 
         self.assertEquals(
             times.format(times.from_unix(unix_time), 'UTC'),
-            '2012-02-03 08:16:44+0000')
+            '2012-02-03T08:16:44.456000+00:00')
         self.assertEquals(
             times.format(times.from_unix(unix_time), 'Europe/Amsterdam'),
-            '2012-02-03 09:16:44+0100')
+            '2012-02-03T09:16:44.456000+01:00')
         self.assertEquals(
             times.format(times.from_unix(unix_time), 'Pacific/Auckland'),
-            '2012-02-03 21:16:44+1300')
+            '2012-02-03T21:16:44.456000+13:00')
 
     def test_convert_non_numeric_from_unix(self):
         """from_unix refuses to accept non-numeric input"""
@@ -167,9 +167,9 @@ class TestTimes(TestCase):
         auckland = pytz.timezone('Pacific/Auckland')
         est = pytz.timezone('EST')
         ams = pytz.timezone('Europe/Amsterdam')
-        self.assertEquals(times.format(dt, auckland), '2012-02-02 00:56:31+1300')
-        self.assertEquals(times.format(dt, ams), '2012-02-01 12:56:31+0100')
-        self.assertEquals(times.format(dt, est), '2012-02-01 06:56:31-0500')
+        self.assertEquals(times.format(dt, auckland), '2012-02-02T00:56:31+13:00')
+        self.assertEquals(times.format(dt, ams), '2012-02-01T12:56:31+01:00')
+        self.assertEquals(times.format(dt, est), '2012-02-01T06:56:31-05:00')
 
     def test_custom_format(self):
         dt = self.sometime_univ

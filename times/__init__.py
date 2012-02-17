@@ -7,7 +7,6 @@ from .version import VERSION
 __author__ = 'Vincent Driessen <vincent@3rdcloud.com>'
 __version__ = VERSION
 
-_default_fmt = '%Y-%m-%d %H:%M:%S%z'
 
 def to_universal(local_dt, timezone=None):
     """Converts the given local datetime or UNIX timestamp to a universal
@@ -86,12 +85,13 @@ def to_unix(dt):
 
 def format(dt, timezone, fmt=None):
     """Formats the given universal time for display in the given time zone."""
-
-    if fmt is None:
-        fmt = _default_fmt
     if timezone is None:
         raise ValueError('Please give an explicit timezone.')
-    return to_local(dt, timezone).strftime(fmt)
+    local = to_local(dt, timezone)
+    if fmt is None:
+        return local.isoformat()
+    else:
+        return local.strftime(fmt)
 
 
 now = datetime.datetime.utcnow
