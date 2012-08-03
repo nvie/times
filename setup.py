@@ -11,6 +11,7 @@ def get_version():
         return VERSION
     raise RuntimeError('No version info found.')
 
+
 setup(
     name='times',
     version=get_version(),
@@ -26,7 +27,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     platforms='any',
-    install_requires=['pytz', 'python-dateutil'],
+    install_requires=['pytz', 'python-dateutil >= 2.1'],
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
         #'Development Status :: 1 - Planning',
