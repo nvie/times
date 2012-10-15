@@ -1,6 +1,9 @@
 Times
 =====
 
+Build status:  
+[![Build Status](https://secure.travis-ci.org/svetlyak40wt/times.png)](http://travis-ci.org/svetlyak40wt/times)
+
 Times is a small, minimalistic, Python library for dealing with time
 conversions to and from timezones, for once and for all.
 
@@ -114,4 +117,3 @@ a timezone instance or a timezone string.
 are advised to use `times.format()` directly instead.
 
 [3]: http://labix.org/python-dateutil#head-c0e81a473b647dfa787dc11e8c69557ec2c3ecd2
-

@@ -27,7 +27,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     platforms='any',
-    install_requires=['pytz', 'python-dateutil >= 2.1'],
+    install_requires=['pytz', 'python-dateutil >= 2.1', 'six'],
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
         #'Development Status :: 1 - Planning',
