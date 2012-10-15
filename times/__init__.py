@@ -1,7 +1,14 @@
+import sys
 import datetime
 import calendar
 import pytz
-import six
+
+PY3 = sys.version_info[0] == 3
+if PY3:
+    string_types = str
+else:
+    string_types = basestring
+
 
 from dateutil.parser import parse
 from .version import VERSION
@@ -20,7 +27,7 @@ def to_universal(local_dt, timezone=None):
                 'Timezone argument illegal when using UNIX timestamps.'
             )
         return from_unix(local_dt)
-    elif isinstance(local_dt, six.string_types):
+    elif isinstance(local_dt, string_types):
         local_dt = parse(local_dt)
 
     return from_local(local_dt, timezone)
@@ -38,7 +45,7 @@ def from_local(local_dt, timezone=None):
                 'argument.'
             )
 
-        if isinstance(timezone, six.string_types):
+        if isinstance(timezone, string_types):
             timezone = pytz.timezone(timezone)
         dt_with_tzinfo = timezone.localize(local_dt)
     else:
@@ -70,7 +77,7 @@ def to_local(dt, timezone):
         raise ValueError(
             'First argument to to_local() should be a universal time.'
         )
-    if isinstance(timezone, six.string_types):
+    if isinstance(timezone, string_types):
         timezone = pytz.timezone(timezone)
     return pytz.utc.localize(dt).astimezone(timezone)
 
