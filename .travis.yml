@@ -3,7 +3,7 @@ python:
   - "2.7"
   - "3.2"
 install:
-    - pip install nose==1.2.1
+    - pip install nose
     - pip install pytz
     - pip install python-dateutil>=2.1
 script: nosetests
