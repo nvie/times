@@ -36,7 +36,7 @@ def to_universal(local_dt, timezone=None):
 def from_local(local_dt, timezone=None):
     """Converts the given local datetime to a universal datetime."""
     if not isinstance(local_dt, datetime.datetime):
-        raise ValueError('First argument should be int, float or datetime.')
+        raise TypeError('Expected a datetime object')
 
     if timezone is not None:
         if local_dt.tzinfo is not None:
@@ -63,9 +63,7 @@ def from_unix(ut):
     time.  Assumes the input is in UTC, as `time.time()` does.
     """
     if not isinstance(ut, (int, float)):
-        raise ValueError(
-            'First argument to from_unix should be an int or float'
-        )
+        raise TypeError('Expected an int or float value')
 
     return datetime.datetime.utcfromtimestamp(float(ut))
 
@@ -85,9 +83,7 @@ def to_local(dt, timezone):
 def to_unix(dt):
     """Converts a datetime object to unixtime"""
     if not isinstance(dt, datetime.datetime):
-        raise ValueError(
-            'First argument to to_unix should be a datetime object'
-        )
+        raise TypeError('Expected a datetime object')
 
     return calendar.timegm(dt.utctimetuple())
 
