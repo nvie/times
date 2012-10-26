@@ -102,7 +102,7 @@ class TestTimes(TestCase):
 
     def test_to_universal_rejects_non_date_arguments(self):
         """to_universal rejects non-date arguments"""
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             times.to_universal([1, 2, 3])
 
 
@@ -127,7 +127,7 @@ class TestTimes(TestCase):
 
     def test_convert_non_numeric_from_unix(self):
         """from_unix refuses to accept non-numeric input"""
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             times.from_unix('lol')
 
 
@@ -141,7 +141,7 @@ class TestTimes(TestCase):
 
     def test_convert_non_numeric_to_unix(self):
         """to_unix refuses to accept non-numeric input"""
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             times.to_unix('lol')
 
 
