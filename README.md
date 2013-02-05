@@ -39,8 +39,10 @@ Accepting time
 Never work with _local_ times.  Whenever you must accept local time input (e.g.
 from a user), convert it to universal time immediately:
 
-    >>> times.to_universal(local_time, 'Europe/Amsterdam')
-    datetime.datetime(2012, 2, 1, 10, 31, 45, 781262)
+```pycon
+>>> times.to_universal(local_time, 'Europe/Amsterdam')
+datetime.datetime(2012, 2, 1, 10, 31, 45, 781262)
+```
 
 The second argument can be a `pytz.timezone` instance, or a timezone string.
 
@@ -56,8 +58,10 @@ Date Strings
 If you want to accepting datetime representations in string form (for example,
 from JSON APIs), you can convert them to universal datetimes easily:
 
-    >>> import time, times
-    >>> print times.to_universal('2012-02-03 11:59:03-0500')   # auto-detects source timezone
+```pycon
+>>> import time, times
+>>> print times.to_universal('2012-02-03 11:59:03-0500')   # auto-detects source timezone
+```
 
 `Times` utilizes the string parsing routines available in [dateutil][3].  Note
 that the source timezone is auto-detected from the string.  If the string
@@ -66,7 +70,9 @@ contains a timezone offset, you are not allowed to explicitly specify one.
 If the string does not contain any timezone offset, you _must_ specify the
 source timezone explicitly:
 
-    >>> print times.to_universal('2012-02-03 11:59:03', 'Europe/Amsterdam')
+```pycon
+>>> print times.to_universal('2012-02-03 11:59:03', 'Europe/Amsterdam')
+```
 
 This is the inverse of `times.format()`.
 
@@ -76,15 +82,19 @@ POSIX timestamps
 If you prefer working with UNIX (POSIX) timestamps, you can convert them to
 safe datetime representations easily:
 
-    >>> import time, times
-    >>> print times.to_universal(time.time())
-    2012-02-03 11:59:03.588419
+```pycon
+>>> import time, times
+>>> print times.to_universal(time.time())
+2012-02-03 11:59:03.588419
+```
 
 Note that `to_universal` auto-detects that you give it a UNIX timestamp.
 
 To get the UNIX timestamp representation of a universal datetime, use:
 
-    >>> print times.to_unix(universal_time)
+```pycon
+>>> print times.to_unix(universal_time)
+```
 
 
 Current time
@@ -92,9 +102,11 @@ Current time
 
 When you want to record the current time, you can use this convenience method:
 
-    >>> import times
-    >>> print times.now()
-    datetime.datetime(2012, 2, 1, 11, 51, 27, 621491)
+```pycon
+>>> import times
+>>> print times.now()
+datetime.datetime(2012, 2, 1, 11, 51, 27, 621491)
+```
 
 
 Presenting times
@@ -103,10 +115,12 @@ Presenting times
 To _present_ times to the end user of your software, you should explicitly
 format your universal time to your user's local timezone.
 
-    >>> import times
-    >>> now = times.now()
-    >>> print times.format(now, 'CET')
-    2012-02-01 21:32:10+0100
+```pycon
+>>> import times
+>>> now = times.now()
+>>> print times.format(now, 'CET')
+2012-02-01 21:32:10+0100
+```
 
 As with the `to_universal` function, the second argument may be either
 a timezone instance or a timezone string.
