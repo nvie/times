@@ -1,10 +1,13 @@
 language: python
 python:
+  - "2.6"
   - "2.7"
   - "3.2"
+  - "3.3"
   - "pypy"
 install:
-    - pip install nose
-    - pip install pytz
-    - pip install python-dateutil>=2.1
-script: nosetests
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then pip install -r py26-requirements.txt; fi
+  - pip install -r requirements.txt
+  #- pip install pytest  # installed by Travis by default already
+script:
+  - py.test
