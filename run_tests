@@ -1,7 +1,0 @@
-#!/bin/sh
-safe_rg=cat
-if which -s rg; then
-    safe_rg=rg
-fi
-
-/usr/bin/env python -m unittest discover -v -s tests $@ 2>&1 | egrep -v '^test_' | $safe_rg
