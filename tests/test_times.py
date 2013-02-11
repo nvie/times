@@ -1,10 +1,13 @@
-from unittest import TestCase
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest  # noqa
 import times
 import pytz
 from datetime import datetime
 
 
-class TestTimes(TestCase):
+class TestTimes(unittest.TestCase):
     def setUp(self):
         est = pytz.timezone('EST')
         ams = pytz.timezone('Europe/Amsterdam')
