@@ -1,8 +1,9 @@
 Times
 =====
 
-Build status:  
-[![Build Status](https://secure.travis-ci.org/nvie/times.png)](http://travis-ci.org/nvie/times)
+Build status:
+[![Build Status](https://secure.travis-ci.org/nvie/times.png)](http://travis-ci.org/nvie/times) [![Coverage Status](https://coveralls.io/repos/nvie/times/badge.png?branch=master)](https://coveralls.io/r/nvie/times?branch=master)
+
 
 Times is a small, minimalistic, Python library for dealing with time
 conversions to and from timezones, for once and for all.
