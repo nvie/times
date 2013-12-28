@@ -1,5 +1,10 @@
 *.pyc
 *.egg-info
-/build
-.env
+
 /.tox
+
+/build
+/dist
+
+/.envrc
+/.direnv
