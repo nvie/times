@@ -2,7 +2,7 @@ Times
 =====
 
 Build status:
-[![Build Status](https://secure.travis-ci.org/nvie/times.png)](http://travis-ci.org/nvie/times)
+[![Build Status](https://travis-ci.org/nvie/times.svg?branch=master)](http://travis-ci.org/nvie/times)
 [![Coverage Status](https://img.shields.io/coveralls/nvie/times.svg)](https://coveralls.io/r/nvie/times?branch=master)
 
 
