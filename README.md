@@ -2,7 +2,8 @@ Times
 =====
 
 Build status:
-[![Build Status](https://secure.travis-ci.org/nvie/times.png)](http://travis-ci.org/nvie/times) [![Coverage Status](https://coveralls.io/repos/nvie/times/badge.png?branch=master)](https://coveralls.io/r/nvie/times?branch=master)
+[![Build Status](https://secure.travis-ci.org/nvie/times.png)](http://travis-ci.org/nvie/times)
+[![Coverage Status](https://img.shields.io/coveralls/nvie/times.svg)](https://coveralls.io/r/nvie/times?branch=master)
 
 
 Times is a small, minimalistic, Python library for dealing with time
