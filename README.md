@@ -1,3 +1,11 @@
+**NOTE:**  
+This library will not be maintained any further.  Version 0.7 has been
+rewritten to provide the same functionality, but internally implemented on top
+of the excellent (and much more powerful) [Arrow](http://crsmithdev.com/arrow/)
+library, by [Chris Smith](https://github.com/crsmithdev).  If you still use
+Times, consider using Arrow instead.
+
+
 Times
 =====
 
@@ -11,14 +19,6 @@ conversions to and from timezones, for once and for all.
 
 It is designed to be simple and clear, but also opinionated about good and bad
 practices.
-
-[Armin Ronacher][1] wrote about timezone best practices in his blog post
-[Dealing with Timezones in Python][2].  The **tl;dr** summary is that
-everything sucks about our mechanisms to represent absolute moments in time,
-but the least worst one of all is UTC.
-
-[1]: http://twitter.com/mitsuhiko
-[2]: http://lucumr.pocoo.org/2011/7/15/eppur-si-muove/
 
 
 Rationale
