@@ -26,7 +26,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     platforms='any',
-    install_requires=['arrow', 'pytz >= 0a', 'python-dateutil >= 2.1'],
+    install_requires=['arrow'],
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
         #'Development Status :: 1 - Planning',

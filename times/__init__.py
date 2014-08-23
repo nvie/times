@@ -1,10 +1,7 @@
 import datetime
-import calendar
 import sys
 
-import pytz
-from dateutil.parser import parse
-
+import arrow
 
 from .version import VERSION
 
@@ -20,17 +17,16 @@ __version__ = VERSION
 
 
 def to_universal(local_dt, timezone=None):
-    """Converts the given local datetime or UNIX timestamp to a universal
+    """
+    Converts the given local datetime or UNIX timestamp to a universal
     datetime.
     """
     if isinstance(local_dt, (int, float)):
         if timezone is not None:
-            raise ValueError(
-                'Timezone argument illegal when using UNIX timestamps.'
-            )
+            raise ValueError('Timezone argument illegal when using UNIX timestamps.')
         return from_unix(local_dt)
     elif isinstance(local_dt, string_types):
-        local_dt = parse(local_dt)
+        local_dt = arrow.get(local_dt).to('UTC').naive
 
     return from_local(local_dt, timezone)
 
@@ -40,46 +36,33 @@ def from_local(local_dt, timezone=None):
     if not isinstance(local_dt, datetime.datetime):
         raise TypeError('Expected a datetime object')
 
-    if timezone is not None:
-        if local_dt.tzinfo is not None:
-            raise ValueError(
-                'Cannot use timezone-aware datetime with explicit timezone '
-                'argument.'
-            )
-
-        if isinstance(timezone, string_types):
-            timezone = pytz.timezone(timezone)
-        dt_with_tzinfo = timezone.localize(local_dt)
+    if timezone is None:
+        a = arrow.get(local_dt)
     else:
-        if local_dt.tzinfo is None:
-            raise ValueError(
-                'Explicit timezone required to convert naive datetimes.'
-            )
-        dt_with_tzinfo = local_dt
-    univ_dt = dt_with_tzinfo.astimezone(pytz.utc)
-    return univ_dt.replace(tzinfo=None)
+        a = arrow.get(local_dt, timezone)
+    return a.to('UTC').naive
 
 
 def from_unix(ut):
-    """Converts a UNIX timestamp, as returned by `time.time()`, to universal
+    """
+    Converts a UNIX timestamp, as returned by `time.time()`, to universal
     time.  Assumes the input is in UTC, as `time.time()` does.
     """
     if not isinstance(ut, (int, float)):
         raise TypeError('Expected an int or float value')
 
-    return datetime.datetime.utcfromtimestamp(float(ut))
+    return arrow.get(ut).naive
 
 
 def to_local(dt, timezone):
-    """Converts universal datetime to a local representation in given timezone.
-    """
+    """Converts universal datetime to a local representation in given timezone."""
     if dt.tzinfo is not None:
         raise ValueError(
             'First argument to to_local() should be a universal time.'
         )
-    if isinstance(timezone, string_types):
-        timezone = pytz.timezone(timezone)
-    return pytz.utc.localize(dt).astimezone(timezone)
+    if not isinstance(timezone, string_types):
+        raise TypeError('expected a timezone name (string), but got {} instead'.format(type(timezone)))
+    return arrow.get(dt).to(timezone).datetime
 
 
 def to_unix(dt):
@@ -87,13 +70,11 @@ def to_unix(dt):
     if not isinstance(dt, datetime.datetime):
         raise TypeError('Expected a datetime object')
 
-    return calendar.timegm(dt.utctimetuple())
+    return arrow.get(dt).timestamp
 
 
 def format(dt, timezone, fmt=None):
     """Formats the given universal time for display in the given time zone."""
-    if timezone is None:
-        raise ValueError('Please give an explicit timezone.')
     local = to_local(dt, timezone)
     if fmt is None:
         return local.isoformat()
