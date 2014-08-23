@@ -1,7 +1,12 @@
-import sys
 import datetime
 import calendar
+import sys
+
 import pytz
+from dateutil.parser import parse
+
+
+from .version import VERSION
 
 PY3 = sys.version_info[0] == 3
 if PY3:
@@ -9,9 +14,6 @@ if PY3:
 else:
     string_types = basestring
 
-
-from dateutil.parser import parse
-from .version import VERSION
 
 __author__ = 'Vincent Driessen <vincent@3rdcloud.com>'
 __version__ = VERSION
