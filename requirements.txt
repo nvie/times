@@ -1,2 +1,1 @@
-pytz
-python-dateutil >= 2.1
+arrow
