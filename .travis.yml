@@ -9,8 +9,8 @@ python:
 install:
   - if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then pip install -r py26-requirements.txt; fi
   - pip install -r requirements.txt
-  - pip install coveralls --use-mirrors
-  #- pip install nose  # installed by Travis by default already
+  - pip install coveralls
+  - pip install pytz
 script:
   - nosetests --with-coverage --cover-erase --cover-package=times
 after_success:
