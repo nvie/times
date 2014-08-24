@@ -1,10 +1,16 @@
 **NOTE:**  
-This library will not be maintained any further.  Version 0.7 has been
-rewritten to provide the same functionality, but internally implemented on top
-of the excellent (and much more powerful) [Arrow](http://crsmithdev.com/arrow/)
-library, by [Chris Smith](https://github.com/crsmithdev).  If you still use
-Times, consider using Arrow instead.
+This library will not be maintained any further.  **You probably want to use
+the excellent [Arrow](http://crsmithdev.com/arrow/) library.**
 
+
+> “There should be one—and preferably only one—obvious way to do it.”
+
+In fact, version 0.7 of times has been rewritten to be implemented on top of
+Arrow, so it still provides the Times interface, but you'll already be using
+Arrow.  You can probably easily replace your times function calls by Arrow
+objects.
+
+---
 
 Times
 =====
@@ -16,23 +22,6 @@ Build status:
 
 Times is a small, minimalistic, Python library for dealing with time
 conversions to and from timezones, for once and for all.
-
-It is designed to be simple and clear, but also opinionated about good and bad
-practices.
-
-
-Rationale
----------
-
-Python's `datetime` library and the `pytz` library are powerful, but because
-they don't prescribe a standard practice of working with dates, everybody is
-free to pick his or her own way.
-
-`times` tries to make working with times and timezones a little less of
-a clusterfuck and hopefully set a standard of some sort.
-
-It still uses `datetime` and `pytz` under the covers, but as long as you never
-use any timezone related stuff outside `times`, you should be safe.
 
 
 Accepting time
@@ -65,7 +54,7 @@ from JSON APIs), you can convert them to universal datetimes easily:
 >>> print times.to_universal('2012-02-03 11:59:03-0500')   # auto-detects source timezone
 ```
 
-`Times` utilizes the string parsing routines available in [dateutil][3].  Note
+`Times` utilizes the string parsing routines available in [dateutil][1].  Note
 that the source timezone is auto-detected from the string.  If the string
 contains a timezone offset, you are not allowed to explicitly specify one.
 
@@ -132,4 +121,4 @@ a timezone instance or a timezone string.
 `strftime()` the resulting local date multiple times.  In any other case, you
 are advised to use `times.format()` directly instead.
 
-[3]: http://labix.org/python-dateutil#head-c0e81a473b647dfa787dc11e8c69557ec2c3ecd2
+[1]: http://labix.org/python-dateutil#head-c0e81a473b647dfa787dc11e8c69557ec2c3ecd2
